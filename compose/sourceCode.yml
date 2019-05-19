@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+    sourceCode.test:
+        image: alpine:3.9
+        volumes:
+            - sourceCode:/go/src/github.com/bitsgofer/example
+
+volumes:
+    sourceCode:

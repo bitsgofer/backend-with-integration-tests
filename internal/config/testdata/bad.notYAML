@@ -1,0 +1,5 @@
+# this file uses tab, not spaces => not YAML
+postgres:
+	url: postgres://@postgres.test:5432?user=example&password=example&dbname=REPLACE&sslmode=disable
+	maxIdleConnection: 2
+	maxOpenConnection: 4

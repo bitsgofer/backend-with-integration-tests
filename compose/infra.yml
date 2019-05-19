@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+    postgres.test:
+        image: postgres:11
+        restart: always
+        environment:
+            POSTGRES_USER: pgadmin
+            POSTGRES_PASSWORD: pgpassword
+        ports:
+            - 5432:5432

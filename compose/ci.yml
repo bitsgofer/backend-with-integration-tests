@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+    ci.test:
+        build:
+            context: ../
+            dockerfile: dockerfiles/base/Dockerfile
+        depends_on:
+            - postgres.test
+        restart: "no"
+        volumes:
+            - sourceCode:/go/src/github.com/bitsgofer/example
+        working_dir: /go/src/github.com/bitsgofer/example
+        entrypoint: |
+            /bin/sh -c "
+                bash ./scripts/wait_for_it.bash postgres.test 5432
+                sleep 5
+
+                echo 'running test...'
+                GO111MODULE=on go test \\
+                    -mod=vendor \\
+                    -race \\
+                    -v \\
+                    -tags integration \\
+                    ./...
+                echo $$? > .exit_code
+
+                exit $$(cat .exit_code)
+            "
+    build.test:
+        build:
+            context: ../
+            dockerfile: dockerfiles/base/Dockerfile
+        restart: "no"
+        volumes:
+            - sourceCode:/go/src/github.com/bitsgofer/example
+        working_dir: /go/src/github.com/bitsgofer/example
+        entrypoint: |
+            /bin/sh -c "
+                GO111MODULE=on go build \\
+                    -mod=vendor \\
+                    ./...
+                echo $$? > .exit_code
+
+                exit $$(cat .exit_code)
+            "
+
+volumes:
+    sourceCode:

@@ -1,0 +1,4 @@
+postgres:
+    url: postgres://@HOST:PORT?user=USER&password=PASSWORD&dbname=DBNAME&sslmode=enabled
+    maxIdleConnection: 2
+    maxOpenConnection: 4
